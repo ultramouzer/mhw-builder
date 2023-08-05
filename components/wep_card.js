@@ -54,6 +54,36 @@ function kinsectString(data, bonusId) {
   );
 }
 
+function noteString(data, noteId){
+    let offset = 252;
+    const [note1, note2, note3] = data.notes[noteId];
+
+    //idx 0:
+    //0 purple
+    //7 white
+
+    //idx 1:
+    //1 red echo wave impact
+
+    //idx 1 or 2:
+    //3 yellow element effectiveness up
+    //4 green extended health recovery
+    //5 dark blue max stamina up + recovery
+    //6 light blue speed boost + evade window up
+
+    //idx 2:
+    //2 orange echo wave dragon
+
+    //scoutfly power up light blue x3
+    //sonic waves yellow x3
+
+    //attack up s white+red, pruple+red+yellow
+    //attack up L purple+red+light blue or dark blue or green
+
+    
+    return data.statusString[offset + noteId];
+}
+
 const WepStat = (props) => (
   <Box
     display="flex"
@@ -187,6 +217,9 @@ export default function WepCard(props) {
                         { data.notes[wep.WepVar1].map((id, i) => (
                           <WepStatIcon key={i} src={'/icon/Notes/' + i + '-' + id + '.png'}/>
                         ))}
+                        <Typography variant="body2" m={0.5}>
+                            { noteString(data, wep.WepVar1) }
+                        </Typography>
                       </WepStat>
                     }
                     { (wep.Class == 7) &&
@@ -249,6 +282,23 @@ export default function WepCard(props) {
             })}
           </Box>
         </Grid>
+        { (wep.Class == 5) &&
+          <Grid item xl={3}>
+            {(() => {
+              let text = [];
+              for(let i = 0; i < 3; i++){
+                text.push((
+            <WepStat>
+              <WepStatIcon src='/icon/phial.png'/>
+              <Typography variant="body2" m={0.5}>
+                { noteString(data, wep.WepVar1) }
+              </Typography>
+            </WepStat> ));
+              }
+              return text;
+            })()}
+          </Grid>
+         }
         { (wep.Class == 8) &&
           <Grid item xl={3}>
             <WepStat>
